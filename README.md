@@ -1,5 +1,9 @@
 # chapter-writer
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Python >= 3.10](https://img.shields.io/badge/python-%3E%3D3.10-blue.svg)](pyproject.toml)
+[![release](https://img.shields.io/github/v/release/homealoneai/skill-chapter-writer)](https://github.com/homealoneai/skill-chapter-writer/releases)
+
 Graph-based Markdown authoring skill. `chapter-writer` keeps a persistent per-workspace knowledge graph that acts as a semantic index and context-management layer for your Markdown documents.
 
 The Markdown files remain the human-readable source of truth. A per-workspace graph (`.graph-md/`) tracks paragraphs, artifacts, questions, and decisions plus the relationships between them, so an agent can retrieve the exact context for a change, catch contradictions, and measure the impact of an edit before making it.
@@ -49,7 +53,7 @@ chapter-writer impact --workspace . --node P-0003
 chapter-writer validate --workspace .
 ```
 
-The full command set is `chapter-writer init|index|search|context|add|update|delete|link|impact|validate|render|status`. Common flags are `--workspace <root>` (defaults to `.`) and `--json` for machine-readable output.
+The full command set is `chapter-writer init|index|search|context|add|update|delete|link|question|decision|impact|validate|render|status`. Common flags are `--workspace <root>` (defaults to `.`) and `--json` for machine-readable output.
 
 ## Repository layout
 
@@ -75,7 +79,7 @@ The full command set is `chapter-writer init|index|search|context|add|update|del
 ├── templates/
 │   ├── workspace.yaml           #   Default configuration (verbatim)
 │   └── document.md              #   Example document with markers
-├── src/chapter_writer/                # Python implementation
+├── src/chapter_writer/          # Python implementation
 └── tests/                       # Tests
 ```
 
