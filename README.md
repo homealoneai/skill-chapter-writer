@@ -8,6 +8,8 @@ Graph-based Markdown authoring skill. `chapter-writer` keeps a persistent per-wo
 
 The Markdown files remain the human-readable source of truth. A per-workspace graph (`.graph-md/`) tracks paragraphs, artifacts, questions, and decisions plus the relationships between them, so an agent can retrieve the exact context for a change, catch contradictions, and measure the impact of an edit before making it.
 
+The skill is harness-independent and safe to invoke from a subagent with a limited context: [`SKILL.md`](SKILL.md) plus the `chapter-writer` CLI (`--json`) is the whole contract — no source or database access needed.
+
 ## Features
 
 - **Persistent knowledge graph** per workspace, stored under `.graph-md/`.

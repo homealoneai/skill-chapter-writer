@@ -21,6 +21,17 @@ Invoke this skill when the task is any of:
 
 Do not invoke it for a single throwaway Markdown file that is not part of a graph-maintained workspace and needs no cross-document consistency.
 
+## Subagent usage
+
+`chapter-writer` is designed to be invoked by a subagent with a limited context:
+
+1. Load only this `SKILL.md` (plus the one reference file relevant to the task).
+2. Identify the workspace (`.graph-md/config.yaml`) and the target document.
+3. Run the `chapter-writer` CLI with `--json` for every step; never read or edit files under `.graph-md/` directly.
+4. Report the structured JSON result verbatim.
+
+The CLI plus this file are the whole contract — no implementation source, database access, or interactive prompt is required.
+
 ## Identify the workspace
 
 1. Find the workspace root by looking for `.graph-md/config.yaml`, starting in the current directory and walking upward.
