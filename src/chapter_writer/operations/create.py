@@ -205,7 +205,7 @@ def add_artifact(
         description=artifact.get("description", ""),
         purpose=artifact.get("purpose", ""),
         content=artifact.get("content", ""),
-        metadata=artifact.get("metadata", {}),
+        metadata={**artifact.get("metadata", {}), "origin": "authoring"},
     )
     node = Node.from_dict(art.to_node_dict())
 

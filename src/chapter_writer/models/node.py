@@ -132,7 +132,7 @@ def question(
         document_id=document_id,
         content=question_text,
         status=status,
-        metadata={"reason": reason, "related_nodes": list(related_nodes or [])},
+        metadata={"reason": reason, "related_nodes": list(related_nodes or []), "origin": "authoring"},
         **kwargs,
     )
 
@@ -151,6 +151,6 @@ def decision(
         kind="decision",
         document_id=document_id,
         content=decision_text,
-        metadata={"rationale": rationale, "source": source},
+        metadata={"rationale": rationale, "source": source, "origin": "authoring"},
         **kwargs,
     )

@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-17
+
+### Fixed
+
+- `sync_document` no longer deletes **Question** and **Decision** nodes (and
+  artifacts registered via `add_artifact`) during re-indexing. Graph-only
+  authoring nodes have no Markdown unit, so they are now preserved; only
+  unit-backed content nodes are retired when their Markdown unit disappears.
+
 ## [0.1.0] - 2026-11-17
 
 ### Added
@@ -44,5 +53,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   isolation.
 - Example workspace in [`examples/independencia-brasileira.md`](examples/independencia-brasileira.md).
 
-[Unreleased]: https://github.com/homealoneai/skill-chapter-writer/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/homealoneai/skill-chapter-writer/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/homealoneai/skill-chapter-writer/releases/tag/v0.1.1
 [0.1.0]: https://github.com/homealoneai/skill-chapter-writer/releases/tag/v0.1.0

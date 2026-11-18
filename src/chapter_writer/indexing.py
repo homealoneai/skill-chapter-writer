@@ -139,10 +139,14 @@ def sync_document(ws, relpath: str, write_markers: bool = True) -> dict:
     # -- content units ----------------------------------------------------
     nodeable = [u for u in parsed.units if u.kind in NODEABLE_KINDS]
     markers = extract_node_markers(text)
+    # Only unit-backed content nodes (paragraph, code, table, image, diagram)
+    # can be retired when their Markdown unit disappears. Graph-only nodes
+    # created by authoring operations (questions, decisions, registered
+    # artifacts) have no Markdown unit and must be preserved across sync.
     existing = {
         n.id: n
         for n in ws.graph.find_nodes({"document_id": doc_id})
-        if n.kind != "document"
+        if n.kind in NODEABLE_KINDS and n.metadata.get("origin") != "authoring"
     }
 
     unit_to_id: dict[int, str] = {}
