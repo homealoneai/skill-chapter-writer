@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "schemas/node.schema.json",
+  "title": "chapter-writer graph node",
+  "description": "A single node in the chapter-writer knowledge graph: a Document, Paragraph, Artifact, Question, or Decision.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "kind", "document_id", "content", "content_hash", "created_at", "updated_at"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stable, allocation-based node id (e.g. P-0001, IMG-0001, FLOW-0001, TABLE-0001, CODE-0001, Q-0001, DEC-0001)."
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["Document", "Paragraph", "Artifact", "Question", "Decision"],
+      "description": "Node type."
+    },
+    "document_id": {
+      "type": "string",
+      "description": "Identity of the owning document: DOC:<normalized workspace-relative path>."
+    },
+    "content": {
+      "type": "string",
+      "description": "Node text content; for artifacts, the textual description or source form (never a replacement for the original artifact)."
+    },
+    "heading": {
+      "type": ["string", "null"],
+      "description": "Section heading the node falls under, when applicable."
+    },
+    "position": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "1-based ordinal position of the node within its document."
+    },
+    "content_hash": {
+      "type": "string",
+      "description": "Stable hash of the node content, used for change detection."
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 1,
+      "description": "Content version number, incremented on each update."
+    },
+    "status": {
+      "type": "string",
+      "default": "active",
+      "description": "Node lifecycle status (e.g. active, draft, archived)."
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Free-form metadata. Artifact nodes store their subtype under metadata.subtype.",
+      "properties": {
+        "subtype": {
+          "type": "string",
+          "enum": ["image", "diagram", "table", "code", "file"],
+          "description": "Artifact subtype; required for Artifact nodes."
+        }
+      }
+    },
+    "provenance": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": [],
+      "description": "Provenance references: source document(s), origin nodes, or external citations."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Creation timestamp (ISO 8601)."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last-update timestamp (ISO 8601)."
+    }
+  }
+}

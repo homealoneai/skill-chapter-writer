@@ -1,0 +1,36 @@
+version: 1
+workspace:
+  id: ""
+  name: Documentation Workspace
+  root: .
+storage:
+  graph:
+    provider: ladybugdb
+    path: .graph-md/graph.db
+  index:
+    path: .graph-md/index
+retrieval:
+  lexical:
+    enabled: true
+    algorithm: tfidf
+    ngram_range: [1, 2]
+  graph:
+    enabled: true
+    default_depth: 1
+    maximum_depth: 3
+  hybrid:
+    lexical_weight: 0.45
+    graph_weight: 0.35
+    document_scope_weight: 0.20
+authoring:
+  maximum_paragraph_words: 120
+  recommended_paragraph_words: 80
+  require_relationships: true
+  allow_unlinked_content: false
+documents:
+  include:
+    - "**/*.md"
+  exclude:
+    - ".graph-md/**"
+    - "node_modules/**"
+    - ".git/**"

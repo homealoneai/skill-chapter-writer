@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "schemas/operation.schema.json",
+  "title": "chapter-writer operation request/result",
+  "description": "A chapter-writer mutation operation request and its result. The request carries operation, workspace, document, content, target_nodes, and options. The result carries status, operation, document, summary, node/relation deltas, impact, questions, and validation.",
+  "oneOf": [
+    { "$ref": "#/definitions/request" },
+    { "$ref": "#/definitions/result" }
+  ],
+  "definitions": {
+    "operationType": {
+      "type": "string",
+      "enum": ["add", "update", "delete", "link"],
+      "description": "The mutation operation kind."
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation", "workspace", "document"],
+      "properties": {
+        "operation": { "$ref": "#/definitions/operationType" },
+        "workspace": {
+          "type": "string",
+          "description": "Absolute path to the workspace root."
+        },
+        "document": {
+          "type": "string",
+          "description": "Workspace-relative path of the target Markdown document."
+        },
+        "content": {
+          "type": "string",
+          "description": "The content or instruction for the operation."
+        },
+        "target_nodes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Node ids the operation targets (update, delete, or link)."
+        },
+        "options": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "dry_run": {
+              "type": "boolean",
+              "default": false,
+              "description": "When true, compute and report the effect without persisting."
+            }
+          }
+        }
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "operation"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["completed", "needs_input", "validation_failed", "conflict", "error"],
+          "description": "Operation status."
+        },
+        "operation": { "$ref": "#/definitions/operationType" },
+        "document": {
+          "type": "string",
+          "description": "The target document path."
+        },
+        "summary": {
+          "type": "string",
+          "description": "One-line human-readable description of what happened."
+        },
+        "nodes_created": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "nodes_modified": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "nodes_deleted": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "relations_created": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "impact": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "required_review": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "recommended_review": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "optional_review": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          },
+          "description": "Impact buckets computed by the graph engine."
+        },
+        "questions": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "object", "additionalProperties": true }
+            ]
+          },
+          "description": "Question node ids (or inline question objects) raised by the operation."
+        },
+        "validation": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "valid": {
+              "type": "boolean"
+            },
+            "warnings": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          },
+          "description": "Validation result mirroring `chapter-writer validate`."
+        }
+      }
+    }
+  }
+}

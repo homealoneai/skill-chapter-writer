@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# chapter-writer internal metadata (per-workspace)
+.graph-md/
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/

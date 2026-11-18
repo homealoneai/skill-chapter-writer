@@ -1,0 +1,194 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "schemas/workspace.schema.json",
+  "title": "chapter-writer workspace configuration",
+  "description": "Configuration for a chapter-writer workspace, stored at .graph-md/config.yaml. Defaults match templates/workspace.yaml.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "workspace", "storage", "retrieval", "authoring", "documents"],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Configuration schema version."
+    },
+    "workspace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "root"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "default": "",
+          "description": "Workspace identifier; empty string means unassigned."
+        },
+        "name": {
+          "type": "string",
+          "default": "Documentation Workspace",
+          "description": "Human-readable workspace name."
+        },
+        "root": {
+          "type": "string",
+          "default": ".",
+          "description": "Workspace root path; the filesystem boundary for all paths."
+        }
+      }
+    },
+    "storage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["graph", "index"],
+      "properties": {
+        "graph": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["provider", "path"],
+          "properties": {
+            "provider": {
+              "type": "string",
+              "default": "ladybugdb",
+              "description": "Graph storage provider."
+            },
+            "path": {
+              "type": "string",
+              "default": ".graph-md/graph.db",
+              "description": "Graph database location."
+            }
+          }
+        },
+        "index": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path"],
+          "properties": {
+            "path": {
+              "type": "string",
+              "default": ".graph-md/index",
+              "description": "Lexical (TF-IDF) index location."
+            }
+          }
+        }
+      }
+    },
+    "retrieval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lexical", "graph", "hybrid"],
+      "properties": {
+        "lexical": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["enabled", "algorithm", "ngram_range"],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true
+            },
+            "algorithm": {
+              "type": "string",
+              "const": "tfidf",
+              "description": "Lexical retrieval algorithm."
+            },
+            "ngram_range": {
+              "type": "array",
+              "items": { "type": "integer" },
+              "minItems": 2,
+              "maxItems": 2,
+              "default": [1, 2],
+              "description": "n-gram range for the TF-IDF vectorizer."
+            }
+          }
+        },
+        "graph": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["enabled", "default_depth", "maximum_depth"],
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true
+            },
+            "default_depth": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 1,
+              "description": "Normal graph traversal hop count."
+            },
+            "maximum_depth": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 3,
+              "description": "Maximum graph traversal hop count."
+            }
+          }
+        },
+        "hybrid": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["lexical_weight", "graph_weight", "document_scope_weight"],
+          "properties": {
+            "lexical_weight": {
+              "type": "number",
+              "default": 0.45,
+              "description": "Weight of the lexical signal."
+            },
+            "graph_weight": {
+              "type": "number",
+              "default": 0.35,
+              "description": "Weight of the graph-traversal signal."
+            },
+            "document_scope_weight": {
+              "type": "number",
+              "default": 0.20,
+              "description": "Weight of the document-scope signal."
+            }
+          }
+        }
+      }
+    },
+    "authoring": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maximum_paragraph_words", "recommended_paragraph_words", "require_relationships", "allow_unlinked_content"],
+      "properties": {
+        "maximum_paragraph_words": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 120
+        },
+        "recommended_paragraph_words": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 80
+        },
+        "require_relationships": {
+          "type": "boolean",
+          "default": true
+        },
+        "allow_unlinked_content": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "documents": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["include", "exclude"],
+      "properties": {
+        "include": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": ["**/*.md"],
+          "description": "Glob patterns for files to index."
+        },
+        "exclude": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [".graph-md/**", "node_modules/**", ".git/**"],
+          "description": "Glob patterns for files to exclude from indexing."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "schemas/relation.schema.json",
+  "title": "chapter-writer relationship",
+  "description": "A directed relationship between two chapter-writer nodes (source -> target).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "source_id", "target_id", "type", "created_at"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Relationship id."
+    },
+    "source_id": {
+      "type": "string",
+      "description": "Node id the relationship originates from."
+    },
+    "target_id": {
+      "type": "string",
+      "description": "Node id the relationship points to."
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "depends_on",
+        "refines",
+        "supports",
+        "implements",
+        "references",
+        "contradicts",
+        "supersedes",
+        "derived_from",
+        "illustrates",
+        "contains"
+      ],
+      "description": "Relationship type; see references/relationship-types.md."
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional note explaining the relationship."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Creation timestamp (ISO 8601)."
+    },
+    "created_by": {
+      "type": "string",
+      "description": "Identifier of the actor (agent or human) that created the relationship."
+    }
+  }
+}
